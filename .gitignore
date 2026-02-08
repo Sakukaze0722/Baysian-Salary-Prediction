@@ -17,3 +17,10 @@ Thumbs.db
 venv/
 env/
 .venv/
+
+# Build / packaging
+dist/
+build/
+*.egg-info/
+*.egg
+.eggs/

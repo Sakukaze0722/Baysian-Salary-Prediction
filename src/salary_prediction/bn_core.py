@@ -79,7 +79,7 @@ class Variable:
         '''
         When this variable is an evidence variable,
         Return the value of the variable.
-        :return the observed value of this variable
+        :return: the observed value of this variable
         '''
         return self.dom[self.evidence_index]
 
@@ -157,7 +157,7 @@ class Factor:
         '''
         Return a copy of the scope so that we can modify the 
         returned copy without affecting this factor
-        :return a copy of the scope
+        :return: a copy of the scope
         '''
         return list(self.scope)
 
@@ -181,24 +181,7 @@ class Factor:
         these values.
         
         :param values: a list of list of values.
-                       
-        For example, if 
-        scope = [A, B, C], 
-        A.domain() = [1, 2, 3], 
-        B.domain() = ['a', 'b'], and 
-        C.domain() = ['heavy', 'light'], 
-        then we could initialize the factor by passing it the following list:
-
-        [[1, 'a', 'heavy', 0.25], [1, 'a', 'light', 1.90],
-         [1, 'b', 'heavy', 0.50], [1, 'b', 'light', 0.80],
-         [2, 'a', 'heavy', 0.75], [2, 'a', 'light', 0.45],
-         [2, 'b', 'heavy', 0.99], [2, 'b', 'light', 2.25],
-         [3, 'a', 'heavy', 0.90], [3, 'a', 'light', 0.111],
-         [3, 'b', 'heavy', 0.01], [3, 'b', 'light', 0.1]]
-
-        Afterwards, the factor's values will be initialized accordingly.
-        For example, the value of (A=1,B='b',C='light') is 0.80.
-         '''
+        '''
         for t in values:
             index = 0
             for v in self.scope:
@@ -212,12 +195,7 @@ class Factor:
         This function is used to retrieve a value from the factor. 
         We pass it an ordered list of values, one for every
         variable in self.scope. It then returns the factor's value on
-        that set of assignments.  For example, if self.scope = [A, B,
-        C], and A.domain() = [1,2,3], B.domain() = ['a', 'b'], and
-        C.domain() = ['heavy', 'light'], and we invoke this function
-        on the list [1, 'b', 'heavy'] we would get a return value
-        equal to the value of this factor on the assignment (A=1,
-        B='b', C='light')
+        that set of assignments.
         '''
         index = 0
         for v in self.scope:
@@ -228,37 +206,7 @@ class Factor:
 
     def add_value_at_current_assignment(self, number): 
         '''This function allows adding values to the factor in a way
-        that will often be more convenient. We pass it only a single
-        number. It then looks at the assigned values of the variables
-        in its scope and initializes the factor to have value equal to
-        number on the current assignment of its variables. Hence, to
-        use this function one first must set the current values of the
-        variables in its scope.
-
-        For example, if 
-            scope = [A, B, C],
-            A.domain() = [1,2,3], 
-            B.domain() = ['a', 'b'], and
-            C.domain() = ['heavy', 'light'], 
-        and we first set an assignment for A, B and C:
-            A.set_assignment(1)
-            B.set_assignment('a')
-            C.set_assignment('heavy')
-        then we call add_value_at_current_assignment(0.33) with the value 0.33, 
-        we would have initialized this factor to have the value 0.33 
-        on the assigments (A=1, B='1', C='heavy')
-        This has the same effect as the call 
-            add_values([1, 'a', 'heavy', 0.33])
-
-        One advantage of the current_assignment interface to factor values is that
-        we don't have to worry about the order of the variables in the factor's
-        scope. add_values on the other hand has to be given tuples of values where 
-        the values must be given in the same order as the variables in the factor's 
-        scope. 
-
-        See recursive_print_values called by print_table to see an example of 
-        where the current_assignment interface to the factor values comes in handy.
-        '''
+        that will often be more convenient.'''
         index = 0
         for v in self.scope:
             index = index * v.domain_size() + v.get_assignment_index()
@@ -271,23 +219,14 @@ class Factor:
         The value retrieved is the value of the factor when
         evaluated at the current assignment to the variables in its
         scope.
-
-        For example, if self.scope = [A, B, C], and A.domain() =
-        [1,2,3], B.domain() = ['a', 'b'], and C.domain() = ['heavy',
-        'light'], and we had previously invoked A.set_assignment(1),
-        B.set_assignment('a') and C.set_assignment('heavy'), then this
-        function would return the value of the factor on the
-        assigments (A=1, B='1', C='heavy')
         '''
-        
         index = 0
         for v in self.scope:
             index = index * v.domain_size() + v.get_assignment_index()
         return self.values[index]
     
     def get_table(self):
-        saved_values = []  #save and then restore the variable assigned values.
-
+        saved_values = []
         for v in self.scope:
             saved_values.append(v.get_assignment_index())
 
@@ -312,11 +251,8 @@ class Factor:
                 self.get_values_recursive(vars[1:], info_dict)
 
     def print_table(self):
-        '''
-        Print the factor's table
-        '''
-        saved_values = []  #save and then restore the variable assigned values.
-
+        '''Print the factor's table'''
+        saved_values = []
         for v in self.scope:
             saved_values.append(v.get_assignment_index())
 
@@ -327,9 +263,6 @@ class Factor:
             saved_values = saved_values[1:]
         
     def recursive_print_values(self, vars):
-        '''
-
-        '''
         if len(vars) == 0:
             print("[",end=""),
             for v in self.scope:
@@ -342,7 +275,6 @@ class Factor:
 
     def __repr__(self):
         return("{}".format(self.name))
-
 
 
 class BN:
@@ -364,21 +296,15 @@ class BN:
                     print(" does not appear in list of variables {}.".format(list(map(lambda x: x.name, f.get_scope())), v.name, list(map(lambda x: x.name, Vars))))
 
     def factors(self):
-        '''
-        Return the list of factors in the Bayes Net.
-        '''
+        '''Return the list of factors in the Bayes Net.'''
         return list(self.Factors)
 
     def variables(self):
-        '''
-        Return the list of variables in the Bayes Net.
-        '''
+        '''Return the list of variables in the Bayes Net.'''
         return list(self.Variables)
 
     def get_variable(self, name):
-        '''
-        Return the variable with the given name
-        '''
+        '''Return the variable with the given name'''
         for v in list(self.Variables):
             if v.name == name:
                 return v

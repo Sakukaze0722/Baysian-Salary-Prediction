@@ -22,15 +22,23 @@ This project implements a Naive Bayesian classifier for predicting whether an in
 ## Project Structure
 
 ```
-├── bn_core.py           # Bayesian network core (Variable, Factor, BN)
-├── salary_model.py      # Naive Bayes model + Variable Elimination
-├── fairness_metrics.py  # Fairness analysis & metrics
-├── data/                # Data directory
+├── src/
+│   └── salary_prediction/    # Main package
+│       ├── bn_core.py        # Bayesian network core (Variable, Factor, BN)
+│       ├── inference.py      # Variable Elimination (ve, normalize, restrict, etc.)
+│       ├── model.py          # Naive Bayes model
+│       └── fairness.py       # Fairness analysis & metrics
+├── scripts/
+│   └── run_evaluation.py     # Train & evaluate script
+├── tests/
+├── data/
 │   ├── adult-train.csv
 │   ├── adult-train_tiny.csv
 │   └── adult-test.csv
 ├── docs/
-│   └── fairness_analysis.md   # Fairness report & methodology
+│   └── fairness_analysis.md
+├── pyproject.toml
+├── requirements.txt
 └── README.md
 ```
 
@@ -46,14 +54,27 @@ This project implements a Naive Bayesian classifier for predicting whether an in
 ### Setup
 
 1. Clone the repository
-2. Place data files in the `data/` directory or project root:
+2. Place data files in the `data/` directory:
    - `adult-train.csv` (or `adult-train_tiny.csv` for quick testing)
    - `adult-test.csv`
-3. Run the main script:
+3. (Optional) Install in development mode:
 
 ```bash
-# Train on tiny dataset (fast) and run fairness analysis
-python salary_model.py
+pip install -e .
+```
+
+### Run
+
+```bash
+# Option 1: Run as module (recommended)
+python -m salary_prediction
+
+# Option 2: Specify train/test paths
+python -m salary_prediction --train data/adult-train.csv --test data/adult-test.csv
+
+# Option 3: Use the script directly
+python scripts/run_evaluation.py
+python scripts/run_evaluation.py --train data/adult-train.csv --test data/adult-test.csv
 ```
 
 ### Output
@@ -68,6 +89,23 @@ The script trains a Naive Bayes model and reports six fairness-related metrics:
 | 4 | Men: P(S\|E) > P(S\|E,G) | Separation check (male) |
 | 5 | Women positive-prediction accuracy | Sufficiency (female) |
 | 6 | Men positive-prediction accuracy | Sufficiency (male) |
+
+---
+
+## Usage as a Library
+
+```python
+from salary_prediction import naive_bayes_model, explore, run_fairness_analysis
+
+# Train model
+bn = naive_bayes_model("data/adult-train_tiny.csv")
+
+# Get a single fairness metric (Q1–Q6)
+q1_value = explore(bn, question=1)
+
+# Get all fairness metrics
+results = run_fairness_analysis(bn, test_data_path="data/adult-test.csv")
+```
 
 ---
 

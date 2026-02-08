@@ -8,18 +8,21 @@ and sufficiency metrics on the UCI Adult dataset.
 import csv
 import os
 
+from .inference import ve
+
 
 def _find_test_data_path(default_name="adult-test.csv"):
     """Resolve test data path, checking data/ and project root."""
     candidates = [
         os.path.join("data", default_name),
         default_name,
-        os.path.join(os.path.dirname(__file__), "data", default_name),
-        os.path.join(os.path.dirname(__file__), default_name),
+        os.path.join(os.path.dirname(__file__), "..", "..", "data", default_name),
+        os.path.join(os.path.dirname(__file__), "..", "..", default_name),
     ]
     for path in candidates:
-        if os.path.isfile(path):
-            return path
+        abs_path = os.path.abspath(path)
+        if os.path.isfile(abs_path):
+            return abs_path
     raise FileNotFoundError(
         f"Test data file '{default_name}' not found. "
         "Place it in project root or data/ directory."
@@ -57,8 +60,6 @@ def compute_p_ge50(bayes_net, row, idx, include_gender=False):
     :param include_gender: If True, add Gender to evidence.
     :return: Probability in [0, 1].
     """
-    from salary_model import ve
-
     evidence_names = ["Work", "Education", "Occupation", "Relationship"]
     if include_gender:
         evidence_names = evidence_names + ["Gender"]

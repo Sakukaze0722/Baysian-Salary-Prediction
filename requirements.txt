@@ -1,0 +1,6 @@
+# Bayesian Salary Prediction & Fairness Analysis
+# Python 3.8+
+# No external runtime dependencies (standard library only)
+
+# For development (optional)
+# pytest>=7.0
