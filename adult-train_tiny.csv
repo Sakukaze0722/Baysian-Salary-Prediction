@@ -1,0 +1,11 @@
+﻿Work,Education,MaritalStatus,Occupation,Relationship,Race,Gender,Country,Salary
+Private,Bachelors,Not-Married,Manual Labour,Not-in-family,Asian-Pac-Islander,Male,North-America,<50K
+Private,Bachelors,Not-Married,Manual Labour,Not-in-family,Asian-Pac-Islander,Male,North-America,<50K
+Private,Masters,Not-Married,Manual Labour,Not-in-family,Asian-Pac-Islander,Male,North-America,<50K
+Private,Masters,Not-Married,Manual Labour,Not-in-family,Asian-Pac-Islander,Female,North-America,<50K
+Private,Masters,Not-Married,Manual Labour,Not-in-family,Asian-Pac-Islander,Female,North-America,<50K
+Private,Masters,Not-Married,Manual Labour,Not-in-family,Amer-Indian-Eskimo,Male,South-America,<50K
+Private,Bachelors,Not-Married,Manual Labour,Not-in-family,Asian-Pac-Islander,Male,North-America,>=50K
+Private,Bachelors,Not-Married,Manual Labour,Not-in-family,Asian-Pac-Islander,Male,North-America,>=50K
+Private,Bachelors,Married,Manual Labour,Husband,Asian-Pac-Islander,Male,North-America,>=50K
+Private,Bachelors,Married,Manual Labour,Wife,Asian-Pac-Islander,Female,North-America,>=50K
